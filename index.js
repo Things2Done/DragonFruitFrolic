@@ -20,15 +20,18 @@ db.on("ready", () => {
   console.log("Connected to the database");
 });
 db.connect();
+// -----
 
+// ----- data save and retrieve
 app.post('/api/data', async (req, res) => {
+  console.log(req.body);
   await db.push('magicData', req.body);
   res.json({ task: "success" });
 });
 
 app.get('/api/data', async (req, res) => {
   const data = await db.get('magicData');
-  res.json('magicData');
+  res.json(data);
 });
 
 

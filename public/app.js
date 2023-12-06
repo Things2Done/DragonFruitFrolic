@@ -6,14 +6,17 @@ socket.on("message", (msg) => {
   console.log(msg);
 });
 
-function demoSaveData(data) {
-  fetch("/api/data", {
+async function saveData(data) {
+  const dataStr = JSON.stringify(data);
+  const response = await fetch("/api/data", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
     },
-    body: data,
-  })
-    .then((res) => res.json())
-    .then((data) => console.log(data));
+    body: dataStr,
+  });
+  const json = await response.json();
+  console.log(json);
 }
+
+
