@@ -10,8 +10,6 @@ app.use(express.json());
 // ----- serve html pages
 app.use('/', express.static('public'));
 
-
-
 // ----- prepare mongodb (https://www.mongodb.com/)
 const { Database } = require("quickmongo");
 // Writing the password here means it will be leaked, but for convenience...
@@ -22,7 +20,13 @@ db.on("ready", () => {
 db.connect();
 // -----
 
-// ----- data save and retrieve
+
+
+app.post('/api/tmpdata', (req, res) => {
+  
+})
+
+// ----- [mongodb] data save and retrieve example, i.e. data persistence
 app.post('/api/data', async (req, res) => {
   console.log(req.body);
   await db.push('magicData', req.body);
@@ -33,7 +37,7 @@ app.get('/api/data', async (req, res) => {
   const data = await db.get('magicData');
   res.json(data);
 });
-
+// -----
 
 // ----- socket.io, for live logic
 io.on('connection', (socket) => {
