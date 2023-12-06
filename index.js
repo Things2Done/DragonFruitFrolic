@@ -50,7 +50,7 @@ app.get('/api/data', async (req, res) => {
 // ----- [socket.io] for live logic
 io.on('connection', (socket) => {
   socket.on('message', (msg) => {
-    console.log(msg);
+    // console.log(msg);
     // send a message to everyone except the sender
     socket.broadcast.emit('message', msg);
   });

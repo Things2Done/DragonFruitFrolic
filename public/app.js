@@ -27,7 +27,8 @@ const saveDataToMongodb = (data) => saveDataTo('/api/data', data);
 const saveDataToServer = (data) => saveDataTo('/api/tmpdata', data);
 
 // if you want to keep the data even if the server stops:
-// saveDataToMongodb({ foo: 'bar' });
+// saveDataToMongodb({ foo: 'foo' });
 
-// or you don't care 
+// or you don't care it, just keep it this round (and you do not need to setup mongodb):
+// saveDataToServer({ bar: 'bar' });
 
