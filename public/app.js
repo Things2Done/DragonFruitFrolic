@@ -1,7 +1,7 @@
 const socket = io();
 
 
-// ----- live data example
+// ----- [socket.io] live data example
 // send
 socket.emit("message", { message: "ping" });
 // receive
@@ -9,10 +9,10 @@ socket.on("message", (msg) => {
   console.log(msg);
 });
 
-// ----- data save example
-async function saveData(data) {
+
+async function saveDataTo(url, data) {
   const dataStr = JSON.stringify(data);
-  const response = await fetch("/api/data", {
+  const response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -23,4 +23,11 @@ async function saveData(data) {
   console.log(json);
 }
 
+const saveDataToMongodb = (data) => saveDataTo('/api/data', data);
+const saveDataToServer = (data) => saveDataTo('/api/tmpdata', data);
+
+// if you want to keep the data even if the server stops:
+// saveDataToMongodb({ foo: 'bar' });
+
+// or you don't care 
 

@@ -2,6 +2,7 @@ const express = require("express");
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 
+// ----- prepare server (including socket.io)
 let app = express();
 const server = createServer(app);
 const io = new Server(server);
@@ -21,16 +22,23 @@ db.connect();
 // -----
 
 
-
+// ----- [server side tmp data]
+// It will be lost once the server stops.
+// (Glitch will stop the server after a while.)
+const tmpdata = [];
 app.post('/api/tmpdata', (req, res) => {
-  
-})
+  tmpdata.push(req.body);
+  res.json({ result: "success" });
+});
+app.get('/api/tmpdata', (req, res) => {
+  res.json(tmpdata);
+});
 
 // ----- [mongodb] data save and retrieve example, i.e. data persistence
 app.post('/api/data', async (req, res) => {
   console.log(req.body);
   await db.push('magicData', req.body);
-  res.json({ task: "success" });
+  res.json({ result: "success" });
 });
 
 app.get('/api/data', async (req, res) => {
@@ -39,7 +47,7 @@ app.get('/api/data', async (req, res) => {
 });
 // -----
 
-// ----- socket.io, for live logic
+// ----- [socket.io] for live logic
 io.on('connection', (socket) => {
   socket.on('message', (msg) => {
     console.log(msg);
@@ -49,7 +57,7 @@ io.on('connection', (socket) => {
 });
 
 
-// ----- start the server
+// ----- start server
 let port = process.env.PORT || 3000;
 
 server.listen(port, () => {
