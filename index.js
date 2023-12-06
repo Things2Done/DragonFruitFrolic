@@ -10,6 +10,8 @@ app.use(express.json());
 // ----- serve html pages
 app.use('/', express.static('public'));
 
+
+
 // ----- prepare mongodb (https://www.mongodb.com/)
 const { Database } = require("quickmongo");
 // Writing the password here means it will be leaked, but for convenience...
@@ -19,8 +21,18 @@ db.on("ready", () => {
 });
 db.connect();
 
-// ----- socket.io
+app.post('/api/data', async (req, res) => {
+  await db.push('magicData', req.body);
+  res.json({ task: "success" });
+});
 
+app.get('/api/data', async (req, res) => {
+  const data = await db.get('magicData');
+  res.json('magicData');
+});
+
+
+// ----- socket.io, for live logic
 io.on('connection', (socket) => {
   socket.on('message', (msg) => {
     console.log(msg);
@@ -33,6 +45,6 @@ io.on('connection', (socket) => {
 // ----- start the server
 let port = process.env.PORT || 3000;
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log('listening at ', port);
 });
