@@ -5,6 +5,10 @@ body {
   background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);
 }
 
+#data-preview {
+  height: 300px;
+}
+
 #map {
   height: 400px;
 }
