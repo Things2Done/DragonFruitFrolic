@@ -91,16 +91,33 @@ var greenIcon = L.icon({
     popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
 });
 
-const marker = L.marker([31.150789, 121.47701], {icon: greenIcon}).addTo(map)
+function addPointToMap(latlng) {
+  const marker = L.marker(latlng, {icon: greenIcon}).addTo(map)
 		.bindPopup('<b>Hello world!</b><br />I am a popup.');
+}
 
 
 function onMapClick(e) {
-  popup
-    .setLatLng(e.latlng)
-    .setContent(`You clicked the map at ${e.latlng.toString()}`)
-    .openOn(map);
+  const latlng = e.latlng;
+  addPointToMap(latlng);
+  socket.emit('point', { name: 'foooo', latlng: latlng });
 }
 
 map.on('click', onMapClick);
+
+async function syncPoints() {
+  // get points so far
+  const res = await fetch('/api/points');
+  const points = await res.json();
+  points.forEach(p => {
+    addPointToMap(p.latlng);
+  });
+  
+  // keep sync
+  socket.on('point', (point) => {
+    addPointToMap(point.latlng);
+  });
+}
+
+syncPoints();
 
