@@ -1,14 +1,3 @@
-const socket = io();
-
-
-// ----- [socket.io] live data example
-// send
-socket.emit("message", { message: "ping" });
-// receive
-socket.on("message", (msg) => {
-  console.log(msg);
-});
-
 
 async function saveDataTo(url, data) {
   let dataStr = data;
@@ -29,16 +18,15 @@ async function saveDataTo(url, data) {
 const saveDataToMongodb = (data) => saveDataTo('/api/data', data);
 const saveDataToServer = (data) => saveDataTo('/api/tmpdata', data);
 
-// [mongodb] if you want to keep the data even if the server stops:
+// ----- [mongodb]
+// if you want to keep the data even if the server stops:
 // saveDataToMongodb({ foo: 'foo' });
 
-// [server side tmp data] or you don't care it, just keep it this round (and you do not need to setup mongodb):
+// ----- [server side tmp data]
+// or you don't care it, just keep it this round (and you do not need to setup mongodb):
 // saveDataToServer({ bar: 'bar' });
 
 
-
-
-// data saving example
 const dataPreview = document.querySelector('#data-preview');
 const dataInput = document.querySelector('#data-input');
 const dataSubmit = document.querySelector('#data-submit');
@@ -50,10 +38,10 @@ async function showData() {
   if (!jsonData) {
     return;
   }
-  console.log(jsonData);
+  // console.log(jsonData);
   
   dataPreview.innerHTML = jsonData.map(item => {
-    return `<p>${item}</p>`
+    return `<p>${item.value}</p>`
   }).join('');
 }
 
@@ -66,17 +54,28 @@ dataSubmit.addEventListener('click', async () => {
     return;
   }
   
-  await saveDataToMongodb(value);
+  await saveDataToMongodb({ value: value });
   alert('saved!');
+  dataInput.value = '';
+  showData();
 });
 
 
 
 
+// ----- [socket.io] live data example
+const socket = io();
+
+// send
+socket.emit("message", { message: "ping" });
+// receive
+socket.on("message", (msg) => {
+  console.log(msg);
+});
 
 
 
-// [leaflet]
+// ----- [leaflet]
 const map = L.map('map').setView([31.150789, 121.47701], 17);
 
 const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
