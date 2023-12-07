@@ -40,14 +40,27 @@ const dataPreview = document.querySelector('#data-preview');
 const dataInput = document.querySelector('#data-input');
 const dataSubmit = document.querySelector('#data-submit');
 
-dataSubmit.addEventListener('click', () => {
+async function showData() {
+  const res = await fetch('/api/data');
+  const jsonData = await res.json();
+  console.log(jsonData);
+  
+  dataPreview.innerHTML = jsonData.map(item => {
+    return `<p>${item}</p>`
+  }).join('');
+}
+
+showData();
+
+dataSubmit.addEventListener('click', async () => {
   const value = dataInput.value;
   if (!value) {
     alert('empty!');
     return;
   }
   
-  save
+  await saveDataToMongodb(value);
+  alert('saved!');
 });
 
 
@@ -57,17 +70,14 @@ dataSubmit.addEventListener('click', () => {
 
 
 // [leaflet]
-const map = L.map('map').setView([51.505, -0.09], 13);
+const map = L.map('map').setView([31.150789, 121.47701], 17);
 
 const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-const popup = L.popup()
-  .setLatLng([51.513, -0.09])
-  .setContent('I am a standalone popup.')
-  .openOn(map);
+
 
 function onMapClick(e) {
   popup
