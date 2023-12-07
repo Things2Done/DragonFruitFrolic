@@ -32,6 +32,30 @@ const saveDataToServer = (data) => saveDataTo('/api/tmpdata', data);
 // [server side tmp data] or you don't care it, just keep it this round (and you do not need to setup mongodb):
 // saveDataToServer({ bar: 'bar' });
 
+
+
+
+// data saving example
+const dataPreview = document.querySelector('#data-preview');
+const dataInput = document.querySelector('#data-input');
+const dataSubmit = document.querySelector('#data-submit');
+
+dataSubmit.addEventListener('click', () => {
+  const value = dataInput.value;
+  if (!value) {
+    alert('empty!');
+    return;
+  }
+  
+  save
+});
+
+
+
+
+
+
+
 // [leaflet]
 const map = L.map('map').setView([51.505, -0.09], 13);
 
