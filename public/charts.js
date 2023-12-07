@@ -1,6 +1,6 @@
 
 let chart, maskImage;
-let data = [
+const defaultData = [
   {
       name: 'Macys',
       value: 1
@@ -39,8 +39,10 @@ let data = [
   },
 ];
 
+let data = defaultData;
+
 function setData(d) {
-  data = d;
+  data = [...defaultData, ...d];
 }
 
 function initChart(dom) {

@@ -34,28 +34,41 @@ const dataSubmit = document.querySelector('#data-submit');
 async function showData() {
   const res = await fetch('/api/data');
   const jsonData = await res.json();
-  dataPreview.innerHTML = '';
-  if (!jsonData) {
-    return;
-  }
+  
   // console.log(jsonData);
   
-  dataPreview.innerHTML = jsonData.map(item => {
-    return `<p>${item.value}</p>`
-  }).join('');
+  // dataPreview.innerHTML = '';
+  // if (jsonData) {
+  //   dataPreview.innerHTML = jsonData.map(item => {
+  //     return `<p>${item.text}</p>`
+  //   }).join('');
+  // }
+  
+  if (jsonData) {
+    const data = jsonData.map(item => {
+      return {
+        name: item.text,
+        value: 1,
+      }
+    });
+    setData(data);
+    refreshChart();
+  }
 }
 
+initChart(dataPreview);
 showData();
 
+
 dataSubmit.addEventListener('click', async () => {
-  const value = dataInput.value;
-  if (!value) {
+  const text = dataInput.value;
+  if (!text) {
     alert('empty!');
     return;
   }
   
-  await saveDataToMongodb({ value: value });
-  alert('saved!');
+  await saveDataToMongodb({ text: text });
+  // alert('saved!');
   dataInput.value = '';
   showData();
 });
