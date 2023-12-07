@@ -31,23 +31,21 @@ const dataPreview = document.querySelector('#data-preview');
 const dataInput = document.querySelector('#data-input');
 const dataSubmit = document.querySelector('#data-submit');
 
-// async function showData() {
-//   const res = await fetch('/api/data');
-//   const jsonData = await res.json();
-//   dataPreview.innerHTML = '';
-//   if (!jsonData) {
-//     return;
-//   }
-//   // console.log(jsonData);
+async function showData() {
+  const res = await fetch('/api/data');
+  const jsonData = await res.json();
+  dataPreview.innerHTML = '';
+  if (!jsonData) {
+    return;
+  }
+  // console.log(jsonData);
   
-//   dataPreview.innerHTML = jsonData.map(item => {
-//     return `<p>${item.value}</p>`
-//   }).join('');
-// }
+  dataPreview.innerHTML = jsonData.map(item => {
+    return `<p>${item.value}</p>`
+  }).join('');
+}
 
-// showData();
-
-initChart(dataPreview);
+showData();
 
 dataSubmit.addEventListener('click', async () => {
   const value = dataInput.value;
