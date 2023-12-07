@@ -83,9 +83,16 @@ const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-function showLocations() {
-  
-}
+var greenIcon = L.icon({
+    iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
+
+    iconSize:     [38, 95], // size of the icon
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+
+const marker = L.marker([31.150789, 121.47701], {icon: greenIcon}).addTo(map)
+		.bindPopup('<b>Hello world!</b><br />I am a popup.');
 
 
 function onMapClick(e) {

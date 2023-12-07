@@ -53,21 +53,28 @@ app.get('/api/remove-all-data', async (req, res) => {
 // -----
 
 
-const pois = []; // or get from mongodb
+const points = []; // or get from mongodb
+
+app.get('/api/points', (req, res) => {
+  res.json(points);
+});
 
 // ----- [socket.io] for live logic
 io.on('connection', (socket) => {
+  
   socket.on('message', (msg) => {
     // console.log(msg);
     // send a message to everyone except the sender
     socket.broadcast.emit('message', msg);
   });
   
-  socket.on('newPOI', (poi) => {
+  socket.on('point', (point) => {
     // add to local array.
-    pois.push(poi);
-    // if you want to keep it 
-    socket.broadcast.emit('pois', pois);
+    points.push(point);
+    
+    // if you want to keep it after the server stops, save it to mongodb as well.
+    
+    socket.broadcast.emit('point', point);
   });
 });
 
