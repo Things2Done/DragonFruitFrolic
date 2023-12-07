@@ -52,12 +52,22 @@ app.get('/api/remove-all-data', async (req, res) => {
 });
 // -----
 
+
+const pois = []; // or get from mongodb
+
 // ----- [socket.io] for live logic
 io.on('connection', (socket) => {
   socket.on('message', (msg) => {
     // console.log(msg);
     // send a message to everyone except the sender
     socket.broadcast.emit('message', msg);
+  });
+  
+  socket.on('newPOI', (poi) => {
+    // add to local array.
+    pois.push(poi);
+    // if you want to keep it 
+    socket.broadcast.emit('pois', pois);
   });
 });
 

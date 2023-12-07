@@ -75,7 +75,7 @@ socket.on("message", (msg) => {
 
 
 
-// ----- [leaflet]
+// ----- [leaflet] 
 const map = L.map('map').setView([31.150789, 121.47701], 17);
 
 const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -83,6 +83,9 @@ const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
+function showLocations() {
+  
+}
 
 
 function onMapClick(e) {
