@@ -45,6 +45,11 @@ app.get('/api/data', async (req, res) => {
   const data = await db.get('magicData');
   res.json(data);
 });
+
+app.get('/api/remove-all-data', async (req, res) => {
+  await db.set('magicData', null);
+  res.json({ result: "success" });
+});
 // -----
 
 // ----- [socket.io] for live logic

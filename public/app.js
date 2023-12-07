@@ -11,7 +11,10 @@ socket.on("message", (msg) => {
 
 
 async function saveDataTo(url, data) {
-  const dataStr = JSON.stringify(data);
+  let dataStr = data;
+  if (typeof dataStr !== 'string') {
+    dataStr = JSON.stringify(data);
+  }
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -43,6 +46,10 @@ const dataSubmit = document.querySelector('#data-submit');
 async function showData() {
   const res = await fetch('/api/data');
   const jsonData = await res.json();
+  dataPreview.innerHTML = '';
+  if (!jsonData) {
+    return;
+  }
   console.log(jsonData);
   
   dataPreview.innerHTML = jsonData.map(item => {
