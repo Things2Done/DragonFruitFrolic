@@ -1,48 +1,12 @@
 
 let chart, maskImage;
-const defaultData = [
-  {
-      name: 'Macys',
-      value: 1
-  },
-  {
-      name: 'Amy Schumer',
-      value: 1
-  },
-  {
-      name: 'Jurassic World',
-      value: 1
-  },
-  {
-      name: 'Charter Communications',
-      value: 1
-  },
-  {
-      name: 'Chick Fil A',
-      value: 1
-  },
-  {
-      name: 'Planet Fitness',
-      value: 2
-  },
-  {
-      name: 'Pitch Perfect',
-      value: 1
-  },
-  {
-      name: 'Express',
-      value: 1
-  },
-  {
-      name: 'Home',
-      value: 1
-  },
-];
+const defaultKeys = ['visualMap', 'continuous', 'contoller', 'series', 'gauge', 'detail', 'piecewise', 'textStyle', 'markPoint', 'pie', 'roseType', 'label', 'emphasis', 'yAxis', 'name', 'type', 'gridIndex', 'normal', 'itemStyle', 'min', 'silent', 'animation', 'offsetCenter', 'inverse', 'borderColor', 'markLine', 'line', 'radiusAxis', 'radar', 'data', 'dataZoom', 'tooltip', 'toolbox', 'geo', 'parallelAxis', 'parallel', 'max', 'bar', 'heatmap', 'map', 'animationDuration', 'animationDelay', 'splitNumber', 'axisLine', 'lineStyle', 'splitLine', 'axisTick', 'axisLabel', 'pointer', 'color'];
+const defaultData = defaultKeys.map(k => ({ name: k, value: 1 }));
 
-let data = defaultData;
+let data = defaultData
 
 function setData(d) {
-  data = [...defaultData, ...d];
+  data = [...d, ...defaultData];
 }
 
 function initChart(dom) {
@@ -63,7 +27,7 @@ function refreshChart() {
   var option = {
       series: [ {
           type: 'wordCloud',
-          sizeRange: [10, 150],
+          sizeRange: [3, 20],
           rotationRange: [0, 0],
           gridSize: 0,
           // shape: 'pentagon',
@@ -86,9 +50,7 @@ function refreshChart() {
                   color: '#528'
               }
           },
-          data: data.sort(function (a, b) {
-              return b.value  - a.value;
-          })
+          data: data
       } ]
   };
   chart.setOption(option);
