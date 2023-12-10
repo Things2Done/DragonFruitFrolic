@@ -1,11 +1,13 @@
 //initailization
 let express = require('express');
-let app = express();
+const { Database } = require("quickmongo");
 
+let app = express();
 app.use(express.json());
 
-const { Database } = require("quickmongo");
-const db = new Database(process.env.MONGODB_URL);
+// set DB_URL in .env
+// user:pwd@cluster0.v8pqot1.mongodb.net
+const db = new Database('mongodb+srv://' + process.env.DB_URL + '/?retryWrites=true&w=majority');
 db.on("ready", () => {
     console.log("Connected to the database");
 });
