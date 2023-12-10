@@ -1,5 +1,5 @@
-// import
-import { OpenStreetMapProvider } from 'leaflet-geosearch';
+
+const { OpenStreetMapProvider } = GeoSearch;
 
 async function callTest(locationQuery){
     // setup
