@@ -106,36 +106,36 @@ window.addEventListener('load', () => {
 
     document.getElementById('get-read-out').addEventListener('click', () => {
         fetch('getEntries')
-            // .then(resp => resp.json())
-            // .then(data => {
-            //     console.log("Data received from /getEntries:",data);
-
-            //     data.forEach(entry => {
-            //         if (typeof entry.lat === 'number' && typeof entry.lon === 'number') {
-            //             L.marker([entry.lat, entry.lon]).addTo(map)
-            //                 .bindPopup(`User: ${entry.user}, Description: ${entry.description}`);
-            //         } else {
-            //             console.error('Invalid entry:', entry);
-            //         }
-            //     });
-            // })
-            // .catch(error => {
-            //     console.error('Error fetching entries:', error);
-            // });
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                } else if (!response.headers.get('content-type')?.includes('application/json')) {
-                    throw new Error("Not a JSON response");
-                }
-                return response.json();
-            })
+            .then(resp => resp.json())
             .then(data => {
-                console.log("Data from /getEntries:", data);
+                console.log("Data received from /getEntries:",data);
+
+                data.forEach(entry => {
+                    if (typeof entry.lat === 'number' && typeof entry.lon === 'number') {
+                        L.marker([entry.lat, entry.lon]).addTo(map)
+                            .bindPopup(`User: ${entry.user}, Description: ${entry.description}`);
+                    } else {
+                        console.error('Invalid entry:', entry);
+                    }
+                });
             })
             .catch(error => {
-                console.error("Fetch error:", error);
+                console.error('Error fetching entries:', error);
             });
+            // .then(response => {
+            //     if (!response.ok) {
+            //         throw new Error(`HTTP error! status: ${response.status}`);
+            //     } else if (!response.headers.get('content-type')?.includes('application/json')) {
+            //         throw new Error("Not a JSON response");
+            //     }
+            //     return response.json();
+            // })
+            // .then(data => {
+            //     console.log("Data from /getEntries:", data);
+            // })
+            // .catch(error => {
+            //     console.error("Fetch error:", error);
+            // });
     }) 
 })
 

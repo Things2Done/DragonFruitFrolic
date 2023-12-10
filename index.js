@@ -37,7 +37,12 @@ app.post('/entered', async (req, res) => {
         console.error(error);
         res.status(500).json({ error: 'An error occurred with the database operation.' });
     }    
-})
+});
+
+app.get('/remove-all-entries', async (req, res) => {
+  await db.set('entriesData', null);
+  res.json({ result: "success" });
+});
 
 app.use('/', express.static('public'));
 app.listen(1234, () => {
