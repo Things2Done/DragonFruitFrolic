@@ -1,14 +1,2 @@
-body {
-  margin: 0;
-  width: 100vw;
-  height: 100vh;
-  background-image: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);
-}
+#map { height: 500px;}
 
-#data-preview {
-  height: 300px;
-}
-
-#map {
-  height: 400px;
-}

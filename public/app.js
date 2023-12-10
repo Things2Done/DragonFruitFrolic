@@ -1,136 +1,142 @@
+// import
+import { OpenStreetMapProvider } from 'leaflet-geosearch';
 
-async function saveDataTo(url, data) {
-  let dataStr = data;
-  if (typeof dataStr !== 'string') {
-    dataStr = JSON.stringify(data);
-  }
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-type": "application/json",
-    },
-    body: dataStr,
-  });
-  const json = await response.json();
-  console.log(json);
+async function callTest(locationQuery){
+    // setup
+    const provider = new OpenStreetMapProvider();
+    // search
+    const results = await provider.search({ query: locationQuery });
+    console.log(results)
+    return results;
 }
 
-const saveDataToMongodb = (data) => saveDataTo('/api/data', data);
-const saveDataToServer = (data) => saveDataTo('/api/tmpdata', data);
+let Lat = 52.53092357796963;
+let Lon = 13.40350205203423;
 
-// ----- [mongodb]
-// if you want to keep the data even if the server stops:
-// saveDataToMongodb({ foo: 'foo' });
-
-// ----- [server side tmp data]
-// or you don't care it, just keep it this round (and you do not need to setup mongodb):
-// saveDataToServer({ bar: 'bar' });
+let map = L.map('map').setView([Lat, Lon], 13);
+let marker = L.marker([52.53820520020355, 13.412629767779348]).addTo(map);
 
 
-const dataPreview = document.querySelector('#data-preview');
-const dataInput = document.querySelector('#data-input');
-const dataSubmit = document.querySelector('#data-submit');
+let places = [];
 
-async function showData() {
-  const res = await fetch('/api/data');
-  const jsonData = await res.json();
-  
-  // console.log(jsonData);
-  
-  // dataPreview.innerHTML = '';
-  // if (jsonData) {
-  //   dataPreview.innerHTML = jsonData.map(item => {
-  //     return `<p>${item.text}</p>`
-  //   }).join('');
-  // }
-  
-  if (jsonData) {
-    const data = jsonData.map(item => {
-      return {
-        name: item.text,
-        value: 1,
-      }
-    });
-    setData(data);
-    refreshChart();
-  }
-}
-
-initChart(dataPreview);
-showData();
-
-
-dataSubmit.addEventListener('click', async () => {
-  const text = dataInput.value;
-  if (!text) {
-    alert('empty!');
-    return;
-  }
-  
-  await saveDataToMongodb({ text: text });
-  // alert('saved!');
-  dataInput.value = '';
-  showData();
-});
-
-
-
-
-// ----- [socket.io] live data example
-const socket = io();
-
-// send
-socket.emit("message", { message: "ping" });
-// receive
-socket.on("message", (msg) => {
-  console.log(msg);
-});
-
-
-
-// ----- [leaflet] 
-const map = L.map('map').setView([31.150789, 121.47701], 17);
-
-const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
+// L.Control.geocoder().addTo(map);
 
-var greenIcon = L.icon({
-    iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
+// // Initialize Mapbox Geocoder
+// const geocoder = new MapboxGeocoder({
+//     accessToken: 'pk.eyJ1IjoiYnJvb2tseW5odW1hbmlzdCIsImEiOiJjbHBwbXdzY2gweWZwMmpvdjJxOW9ieXBsIn0.7DGJB1rn9hKS8QpLR_XI4Q', 
+//     types: 'place',
+//     placeholder: 'Search for your city',
+// });
+// geocoder.addTo('#location');
+// geocoder.on('result', (data) => {
+//     console.log(data);
+//     if (data.result) {
+//         const { text, center } = data.result;
+//         setLocation(text, center); // Function to handle geocoder results
+//     }
+// });
 
-    iconSize:     [38, 95], // size of the icon
-    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-});
-
-function addPointToMap(latlng) {
-  const marker = L.marker(latlng, {icon: greenIcon}).addTo(map)
-		.bindPopup('<b>Hello world!</b><br />I am a popup.');
-}
+// // Function to handle geocoder results
+// function setLocation(text, center) {
+//     document.getElementById("location").value = text;
+//     places.push({ lat: center[1], lon: center[0] });
+// }
 
 
-function onMapClick(e) {
-  const latlng = e.latlng;
-  addPointToMap(latlng);
-  socket.emit('point', { name: 'foooo', latlng: latlng });
-}
+window.addEventListener('load', () => {
+    document.getElementById('button-enter')?.addEventListener('click', async () => {
+        let user = document.getElementById("user").value;
+        let location = document.getElementById("location").value;
+        let description = document.getElementById("description").value;
+        let category = document.getElementById("category").value;
+        let multimedia = document.getElementById("multimedia");
+        if (multimediaInput.files.length > 0) {
+            let file = multimediaInput.files[0];}
+        console.log(user);
+        console.log(location);
+        console.log(description);
+        console.log(category);
+        console.log(multimedia);
+        // Handle the form submission with geocoded data
+        let lastEnteredLocation = places.length > 0 ? places[places.length - 1] : null;
+        let obj = {
+            "user": user,
+            "location": location,
+            "description": description,
+            "category": category,
+            "multimedia": multimedia,
+            "lat": lastEnteredLocation ? lastEnteredLocation.lat : undefined,
+            "lon": lastEnteredLocation ? lastEnteredLocation.lon : undefined
+        };
+        let jsonData = JSON.stringify(obj);
 
-map.on('click', onMapClick);
+        const geocodeResults = await callTest(location);
+        if (geocodeResults.length > 0) {
+            const { x: lon, y: lat } = geocodeResults[0];
+            // You can use lat and lon as needed, for example:
+            // Add a marker to the map at the geocoded location
+            L.marker([lat, lon]).addTo(map).bindPopup(location);
+            // console.log(location);
+            // console.log(lat);
+            // console.log(lon);
 
-async function syncPoints() {
-  // get points so far
-  const res = await fetch('/api/points');
-  const points = await res.json();
-  points.forEach(p => {
-    addPointToMap(p.latlng);
-  });
-  
-  // keep sync
-  socket.on('point', (point) => {
-    addPointToMap(point.latlng);
-  });
-}
+            obj.lat = lat;
+            obj.lon = lon;
+            jsonData = JSON.stringify(obj);            
+        console.log("Data to be sent to server:",jsonData)
+        }
 
-syncPoints();
+        fetch('/entered', {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: jsonData
+        })
+            .then(res => {
+                return res.json
+            })
+            .then(data => (console.log("Response from /entered:",data)))
+            .catch(error => console.error("Error in fetch /entered:", error));
+    })
+
+    document.getElementById('get-read-out').addEventListener('click', () => {
+        fetch('getEntries')
+            // .then(resp => resp.json())
+            // .then(data => {
+            //     console.log("Data received from /getEntries:",data);
+
+            //     data.forEach(entry => {
+            //         if (typeof entry.lat === 'number' && typeof entry.lon === 'number') {
+            //             L.marker([entry.lat, entry.lon]).addTo(map)
+            //                 .bindPopup(`User: ${entry.user}, Description: ${entry.description}`);
+            //         } else {
+            //             console.error('Invalid entry:', entry);
+            //         }
+            //     });
+            // })
+            // .catch(error => {
+            //     console.error('Error fetching entries:', error);
+            // });
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                } else if (!response.headers.get('content-type')?.includes('application/json')) {
+                    throw new Error("Not a JSON response");
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Data from /getEntries:", data);
+            })
+            .catch(error => {
+                console.error("Fetch error:", error);
+            });
+    }) 
+})
+
 

@@ -1,86 +1,61 @@
-const express = require("express");
-const { createServer } = require('http');
-const { Server } = require('socket.io');
-
-// ----- prepare server (including socket.io)
+//initailization
+let express = require('express');
 let app = express();
-const server = createServer(app);
-const io = new Server(server);
+require('dotenv').config();
+
 app.use(express.json());
 
-// ----- serve html pages
-app.use('/', express.static('public'));
-
-// ----- prepare mongodb (https://www.mongodb.com/)
 const { Database } = require("quickmongo");
-const db = new Database(`mongodb+srv://${process.env.USER_PWD}@cluster0.v8pqot1.mongodb.net/?retryWrites=true&w=majority`);
+const db = new Database(process.env.MONGODB_URL);
 db.on("ready", () => {
-  console.log("Connected to the database");
+    console.log("Connected to the database");
 });
-db.connect();
-// -----
-
-
-// ----- [server side tmp data]
-// It will be lost once the server stops.
-// (Glitch will stop the server after a while.)
-const tmpdata = [];
-app.post('/api/tmpdata', (req, res) => {
-  tmpdata.push(req.body);
-  res.json({ result: "success" });
+db.on("error", (error) => {
+    console.error("Error with the database connection:", error);
 });
-app.get('/api/tmpdata', (req, res) => {
-  res.json(tmpdata);
-});
-
-// ----- [mongodb] data save and retrieve example, i.e. data persistence
-app.post('/api/data', async (req, res) => {
-  console.log(req.body);
-  await db.push('magicData', req.body);
-  res.json({ result: "success" });
-});
-
-app.get('/api/data', async (req, res) => {
-  const data = await db.get('magicData');
-  res.json(data);
-});
-
-app.get('/api/remove-all-data', async (req, res) => {
-  await db.set('magicData', null);
-  res.json({ result: "success" });
-});
-// -----
+db.connect()
+.then(() => console.log("Successfully connected to the database"))
+   .catch(err => console.error("Database connection failed:", err));
 
 
-const points = []; // or get from mongodb
 
-app.get('/api/points', (req, res) => {
-  res.json(points);
+let entriesData = [];
+
+
+app.post('/entered', async (req, res) => {
+    console.log("Received data at /entered:", req.body);
+    // entries.push(req.body)
+    // console.log(entries)
+
+    try {
+        
+        const result = await db.push('entriesData', req.body);
+        console.log("Data pushed to database:", result);
+        res.json({ task: "success" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred with the database operation.' });
+    }    
+})
+
+app.use('/', express.static('public'));
+app.listen(1234, () => {
+    console.log('listening:1234');
 });
 
-// ----- [socket.io] for live logic
-io.on('connection', (socket) => {
-  
-  socket.on('message', (msg) => {
-    // console.log(msg);
-    // send a message to everyone except the sender
-    socket.broadcast.emit('message', msg);
-  });
-  
-  socket.on('point', (point) => {
-    // add to local array.
-    points.push(point);
-    
-    // if you want to keep it after the server stops, save it to mongodb as well.
-    
-    socket.broadcast.emit('point', point);
-  });
-});
-
-
-// ----- start server
-let port = process.env.PORT || 3000;
-
-server.listen(port, () => {
-  console.log('listening at ', port);
+// app.get('/getEntries',(req,res)=>{
+//     let obj = {data:entries};
+//     res.json(obj);
+// })
+app.get('/getEntries', async (req, res) => {
+    try {
+        const data = await db.get('entriesData');
+        console.log("Data retrieved from database:", data);
+        res.setHeader('Content-Type', 'application/json');
+        res.json(data);
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to retrieve entries.' });
+    }
 });
