@@ -4,61 +4,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!--     <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js'></script> -->
-<!--     <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css' type='text/css' /> -->
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  
-  <link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.css"
-/>
-  
-  <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
-  
-  
-    <!-- Load Esri Leaflet from CDN -->
-<!--     <script src="https://unpkg.com/esri-leaflet@3.0.10/dist/esri-leaflet.js"></script> -->
-    <!-- Load Esri Leaflet Geocoder from CDN -->
-<!--     <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@3.1.4/dist/esri-leaflet-geocoder.css" crossorigin="" /> -->
-<!--     <script src="https://unpkg.com/esri-leaflet-geocoder@3.1.4/dist/esri-leaflet-geocoder.js" crossorigin=""></script>         -->
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.css" />
+
+    <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
+
+
     <link rel="stylesheet" href="./style.css">
 
-<!--     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" /> -->
-<!--     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script> -->
     <title>Dragon Fruit Frolics</title>
 </head>
 
 <body>
-    <h1>DRAGON FRUIT FROLICS</h1>
-    <p>Map</p>
-    <div id="map"></div>
-    <p>Below the map will be multiple entry fields and a submit button</p>
-    <div>
-        <p>User: <input type="text" name="" id="user"></p>
-        <p>Location: <input type="text" name="" id="location"></p>
-        <p>Descrption: <input type="text" name="" id="description"></p>
-        <p>Category:
-            <select name = "" id ="category">
-            <option value="food"> Food</option>
-            <option value="entertainment"> Entertainment</option>
-            <option value="school-event"> School-Event</option>
-            <option value="historic site"> Historic Site</option>
-            <option value="living"> Living</option>
-            </select>
-        <p>Photos & Video: <input type="file" name="" id="multimediaInput" accept="image/*,video/*"></p>
-        <button id="button-enter">Enter New Info</button>
-    </div>
+    <!-- <h1>DRAGON FRUIT FROLICS</h1> -->
+    <div id="whole-page">
+        <div id="header"></div>
+        <div id="content-container">
+            <div id="map"></div>
+            <div id="right-side-container">
+                <div id="entry-form-container">
+                    <div class="form-group">
+                        <p>DragonFruit: <input type="text" name="" id="user"></p>
+                    </div>
+                    <div class="form-group">
+                        <p>Where We Going: <input type="text" name="" id="location"></p>
+                    </div>
+                    <div class="form-group">
+                        <p>Describe It:
+                        <textarea id="description" class="description-input" rows="8"></textarea>
+                    </p>
+                    </div>
+                    <div class="form-group">
+                        <p>Category:
+                            <select name="" id="category"><br>
+                                <option value="food"> Food</option><br>
+                                <option value="entertainment"> Entertainment</option><br>
+                                <option value="school-event"> School-Event</option><br>
+                                <option value="historic-site"> Historic Site</option><br>
+                                <option value="living"> Living</option>
+                            </select>
+                    </div>
+                    <div class="form-group">
+                        <p>Photos & Video: <input type="file" name="" id="multimediaInput" accept="image/*,video/*"></p>
+                    </div>
+                    <div class="form-group">
+                        <button id="button-enter">ADD PLACE</button>
+                    </div>
+                    <div id="image"></div>
+                </div>
 
-    <div id="read-out">
-        <button id="get-read-out">get readout</button>
-        <div id="read-out-info"></div>
-    </div>
-    <script src="./app.js" type="module"></script>
+                <!-- <div id="read-out">
+                <button id="get-read-out">get readout</button>
+                <div id="read-out-info"></div> -->
+            </div>
 
+        </div>
+        <script src="./app.js" type="module"></script>
+    </div>
 </body>
 
 </html>

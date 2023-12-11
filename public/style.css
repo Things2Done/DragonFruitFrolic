@@ -1,2 +1,120 @@
-#map { height: 500px;}
 
+#whole-page {
+    background-color: black;
+}
+
+#header {
+    background-image: url('header.png');
+    background-size: cover; /* Ensures the image covers the header area */
+    background-position: center; /* Centers the image in the header */
+    background-repeat: no-repeat; /* Prevents tiling of the image */
+    width: 95vw; /* Ensures the header is as wide as the viewport or its container */
+    height: 10vh; /* Sets a fixed height; you can also use vh for a viewport-relative height */
+  }
+
+  #content-container {
+    display: flex;
+    flex-direction: row; /* Arrange children in a row */
+    align-items: stretch; /* Align items to the start of the container */
+    height: 85vh; /* Adjust height as needed */
+}
+
+#map { height: 100%;
+    width: 50vw;
+}
+
+#right-side-container {
+    width: 50vw;
+    background-image: url('BerlinDragonfruit2.png');
+    background-size: cover; /* Ensures the image covers the area */
+    background-position: center; /* Centers the image */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the form on the image */
+    justify-content: center; /* This vertically centers the content */
+}
+
+#entry-form-container {
+
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+    align-items: flex-start; /* Align children to the right */
+    padding-right: 20px; /* Add padding if necessary */
+    width: 80%; /* Adjust the width as necessary */
+    margin-top: 20px; /* Add some space on top */
+}
+
+.form-group {
+    display: flex;
+    justify-content: flex-end; /* Align children to the right */
+    margin-bottom: 5px; /* Space between form groups */
+}
+
+.form-group input[type="text"],
+.form-group select {
+    order: -1; /* Render input before label */
+    margin-right: 10px; /* Space between input and label */
+    /* Add more styles as necessary */
+}
+
+.description-input {
+    width: 100%; /* Adjust the width as needed */
+    /* You can also adjust height, padding, border, etc., as necessary */
+}
+
+#entry-form-container {
+    display: flex;
+    
+    justify-content: space-between;
+    color: whitesmoke; /* Change font color to white for visibility on black background */
+    padding: 20px;
+}
+.imgwrapper {
+width: 100%;
+height: 80%;
+}
+
+img {
+height: 100%;
+width: 100%;
+}
+
+/* Ensure form elements are visible */
+input[type="text"], select, input[type="file"] {
+    color: black; /* Text inside inputs should be black for contrast */
+    background-color: white; /* Background of inputs should be white */
+    border: 1px solid #ccc; /* Optional: adds a light border to the inputs */
+    padding: 5px; /* Adds some padding inside the inputs */
+    width: 100%; /* Make inputs fill their container */
+}
+
+input[type="text"]:focus, select:focus, input[type="file"]:focus {
+    outline: none; /* Removes the default focus outline */
+    border-color: #a83232; /* Adds a red border or any color of your choice for focus */
+}
+
+button {
+    background-color: #a83232; /* Adds a background color to the button */
+    color: white; /* Change button text to white */
+    border: none; /* Removes the default border */
+    padding: 10px 20px; /* Adds some padding to the button */
+    cursor: pointer; /* Changes the cursor to a pointer on hover */
+}
+
+button:hover {
+    background-color: #8f2d2d; /* Darken the button color on hover for a visual effect */
+}
+
+/* Responsiveness: Adjust for smaller screens */
+@media (max-width: 768px) {
+    #entry-form-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #left-column, #right-column {
+        flex: none; /* Reset the flex on smaller screens */
+        margin: 10px 0; /* Stack the columns with space between */
+    }
+}
