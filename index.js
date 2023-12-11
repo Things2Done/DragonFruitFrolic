@@ -1,3 +1,6 @@
+require('dotenv').config();
+const dbURL = process.env.DB_URL
+
 //initailization
 let express = require('express');
 let app = express();
@@ -7,7 +10,7 @@ app.use(express.json());
 //Import quickmongo 
 const { Database } = require("quickmongo");
 //create new database in Mongodb
-const db = new Database(`mongodb+srv://brooklynhumanist:5EO8UdybBu2Kkv6r@cluster0.x3shmbu.mongodb.net/?retryWrites=true&w=majority`)
+const db = new Database(`mongodb+srv://`+dbURL+`@cluster0.x3shmbu.mongodb.net/?retryWrites=true&w=majority`)
 
 //connect to database
 db.connect()
