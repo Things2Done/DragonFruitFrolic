@@ -1,4 +1,5 @@
-
+//aggregate marker data by lat/lon so all photos from a place are together
+//start screen with a log-on
 
 const { OpenStreetMapProvider } = GeoSearch;
 
@@ -12,6 +13,8 @@ async function callTest(locationQuery) {
     console.log(results)
     return results;
 }
+
+const fileInput = document.getElementById('multimediaInput');
 
 
 // iconUrl: 'dragonfruitMarker.png',
@@ -61,7 +64,7 @@ let Lon = 13.412658806197292;
 //initalize leaflet map looking at NYU Berlin with Zoom of 13
 let map = L.map('map').setView([Lat, Lon], 13);
 //marker placed at NYU Berlin
-let marker = L.marker([Lat, Lon], { icon: schoolMarker }).addTo(map);
+// let marker = L.marker([Lat, Lon], { icon: schoolMarker }).addTo(map);
 // let marker = L.marker([Lat, Lon],).addTo(map);
 
 
@@ -79,107 +82,247 @@ window.addEventListener('load', () => {
     //call function to load map markers immediately with page
     fetchEntriesAndAddMarkers();
     //when enter button is pressed do the following
-    document.getElementById('button-enter')?.addEventListener('click', async () => {
+    document.getElementById('button-enter')?.addEventListener('click', async (event) => {
+        //         event.preventDefault();
+
+
+        //         // if (multimediaInput.files.length > 0) {
+        //         //     let file = multimediaInput.files[0];
+        //         // }
+        //         // console.log(user);
+        //         // console.log(location);
+        //         // console.log(description);
+        //         // console.log(category);
+        //         // Handle the form submission with geocoded data
+
+
+
+        //         //make an object from the entry information
+        //         
+
+
+        //         // Convert the object to a JSON string.
+        //         // let jsonData = JSON.stringify(obj);
+
+        //  // Get the selected file from the multimediaInput element
+        //  const multimediaInput = document.getElementById('multimediaInput');
+        //  if (multimediaInput && multimediaInput.files.length > 0) {
+        //      let file = multimediaInput.files[0];
+
+        //      // Create FormData and append the file
+        //      let formData = new FormData();
+        //      formData.append('file', file);
+
+        //      // Fetch call to upload the file
+        //      try {
+        //          const uploadResponse = await 
+        //          fetch('/upload', {
+        //              method: 'POST',
+        //              body: formData
+        //          });
+
+        //          if (uploadResponse.ok) {
+        //          const uploadData = await uploadResponse.json();
+        //          console.log('Success:', uploadData);
+        //          // Include the file path in the object you send to '/entered'
+        //          obj.multimedia = uploadData.filePath;
+
+        //         } else {
+        //             // Handle the server error
+        //             console.error('Server error during file upload');
+        //             return
+        //         }
+
+
+        //         // Use the geocoding function to get coordinates for the provided location.
+
+        //         const geocodeResults = await callTest(location);
+        //         // If geocoding results are returned, place a new marker on the map and update the object with the latitude and longitude.
+
+        //         if (geocodeResults.length > 0) {
+        //             const { x: lon, y: lat } = geocodeResults[0];
+        //             let categoryIcon;
+
+        //             switch (category) {
+        //                 case 'food':
+        //                     categoryIcon = foodMarker;
+        //                     break;
+        //                 case 'entertainment':
+        //                     categoryIcon = entertainmentMarker;
+        //                     break;
+        //                 case 'school-event':
+        //                     categoryIcon = schoolMarker;
+        //                     break;
+        //                 case 'historic-site':
+        //                     categoryIcon = historyMarker;
+        //                     break;
+        //                 case 'living':
+        //                     categoryIcon = livingMarker;
+        //                     break;
+        //                 default:
+        //                     console.error('Invalid category:', category);
+        //                     return; // Exit the function if the category is invalid
+        //             }
+
+        //             // Now use the categoryIcon when creating a marker
+        //             L.marker([lat, lon], { icon: categoryIcon }).addTo(map).bindPopup(`User: ${user} <br>Location: ${location} <br>Description: ${description}<br>Category: ${category}`);
+
+
+
+        //             // if (geocodeResults.length > 0) {
+        //             //     const { x: lon, y: lat } = geocodeResults[0];
+
+        //             // //if the entry is for living notate the area, if it is anything 
+        //             // //else place a specific marker
+        //             //     if (category === 'Living'){
+        //             //         let polygonCoords =[
+        //             //             [lat, lon],
+        //             //         ]
+        //             //     }
+        //             //     // You can use lat and lon as needed, for example:
+        //             //     // Add a marker to the map at the geocoded location
+        //             //     L.marker([lat, lon]).addTo(map).bindPopup(location);
+        //             // console.log(location);
+        //             // console.log(lat);
+        //             // console.log(lon);
+        //             obj.lat = lat;
+        //             obj.lon = lon;
+        //         }
+        //         jsonData = JSON.stringify(obj);
+        //         console.log("Data to be sent to server:", jsonData);
+
+
+
+        //         // Send a POST request to the '/entered' endpoint with the JSON data.
+        //           const enteredResponse = fetch('/entered', {
+        //             method: 'POST',
+        //             headers: {
+        //                 "Content-type": "application/json"
+        //             },
+        //             body: jsonData
+        //         });
+        //             // //parse response as json
+        //             // .then(res => {
+        //             //     return res.json();
+        //             // })
+        //             // //log response and catch any errors
+        //             // .then(data => (console.log("Response from /entered:", data)))
+        //             // .catch(error => console.error("Error in fetch /entered:", error));
+
+        //             const enteredData = await enteredResponse.json();
+        //         console.log("Response from /entered:", enteredData);
+        //     } catch (error) {
+        //         console.error('Error during file upload or entry submission:', error);
+        //     }
+        // Inside the 'button-enter' event listener:
+
+        // Prevent the default form submission behavior
+        event.preventDefault();
+
+
         //get the values from each entry field
         let user = document.getElementById("user").value;
         let location = document.getElementById("location").value;
         let description = document.getElementById("description").value;
         let category = document.getElementById("category").value;
-        if (multimediaInput.files.length > 0) {
-            let file = multimediaInput.files[0];
-        }
-        console.log(user);
-        console.log(location);
-        console.log(description);
-        console.log(category);
-        // Handle the form submission with geocoded data
+
         let lastEnteredLocation = places.length > 0 ? places[places.length - 1] : null;
-        //make an object from the entry information
+
+
         let obj = {
             "user": user,
             "location": location,
             "description": description,
             "category": category,
-            // "multimedia": file,
+            "multimedia": null,
             "lat": lastEnteredLocation ? lastEnteredLocation.lat : undefined,
             "lon": lastEnteredLocation ? lastEnteredLocation.lon : undefined
         };
-        // Convert the object to a JSON string.
-        let jsonData = JSON.stringify(obj);
 
-        // Use the geocoding function to get coordinates for the provided location.
+        // Get the selected file from the multimediaInput element
+        const multimediaInput = document.getElementById('multimediaInput');
+        if (multimediaInput && multimediaInput.files.length > 0) {
+            let file = multimediaInput.files[0];
 
-        const geocodeResults = await callTest(location);
-        // If geocoding results are returned, place a new marker on the map and update the object with the latitude and longitude.
+            // Create FormData and append the file
+            let formData = new FormData();
+            formData.append('file', file);
 
-        if (geocodeResults.length > 0) {
-            const { x: lon, y: lat } = geocodeResults[0];
-            let categoryIcon;
+            // Fetch call to upload the file
+            try {
+                const uploadResponse = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
 
-            switch (category) {
-                case 'food':
-                    categoryIcon = foodMarker;
-                    break;
-                case 'entertainment':
-                    categoryIcon = entertainmentMarker;
-                    break;
-                case 'school-event':
-                    categoryIcon = schoolMarker;
-                    break;
-                case 'historic-site':
-                    categoryIcon = historyMarker;
-                    break;
-                case 'living':
-                    categoryIcon = livingMarker;
-                    break;
-                default:
-                    console.error('Invalid category:', category);
-                    return; // Exit the function if the category is invalid
+                if (uploadResponse.ok) {
+                    const uploadData = await uploadResponse.json();
+                    console.log('Success:', uploadData);
+
+                    // Assign the file path to the multimedia property of the obj
+                    obj.multimedia = uploadData.filePath;
+
+                    // Now perform the geocoding to get the coordinates
+                    const geocodeResults = await callTest(location);
+                    if (geocodeResults.length > 0) {
+                        const { x: lon, y: lat } = geocodeResults[0];
+                        obj.lat = lat;
+                        obj.lon = lon;
+
+                        // Send the entry data including the file path to the server
+                        const enteredResponse = await fetch('/entered', {
+                            method: 'POST',
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(obj)
+                        });
+
+                        const enteredData = await enteredResponse.json();
+                        console.log("Response from /entered:", enteredData);
+
+                        // Optionally, refresh the map markers
+                        fetchEntriesAndAddMarkers();
+                    } else {
+                        console.error('Geocoding failed: No results returned.');
+                    }
+                } else {
+                    console.error('Server error during file upload');
+                }
+            } catch (error) {
+                console.error('Error during file upload or entry submission:', error);
             }
-
-            // Now use the categoryIcon when creating a marker
-            L.marker([lat, lon], { icon: categoryIcon }).addTo(map).bindPopup(`User: ${user} <br>Location: ${location} <br>Description: ${description}<br>Category: ${category}`);
-
-
-
-            // if (geocodeResults.length > 0) {
-            //     const { x: lon, y: lat } = geocodeResults[0];
-
-            // //if the entry is for living notate the area, if it is anything 
-            // //else place a specific marker
-            //     if (category === 'Living'){
-            //         let polygonCoords =[
-            //             [lat, lon],
-            //         ]
-            //     }
-            //     // You can use lat and lon as needed, for example:
-            //     // Add a marker to the map at the geocoded location
-            //     L.marker([lat, lon]).addTo(map).bindPopup(location);
-            // console.log(location);
-            // console.log(lat);
-            // console.log(lon);
-            obj.lat = lat;
-            obj.lon = lon;
-            jsonData = JSON.stringify(obj);
+        } else {
+            // Handle the case where no file is selected
+            // Perform geocoding to get coordinates
+            const geocodeResults = await callTest(location);
+            if (geocodeResults.length > 0) {
+                const { x: lon, y: lat } = geocodeResults[0];
+                obj.lat = lat;
+                obj.lon = lon;
+            }
+        
+            // Submit the entry to the server
+            const enteredResponse = await fetch('/entered', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(obj)
+            });
+            
+            if (!enteredResponse.ok) {
+                throw new Error('Server responded with an error on entry submission.');
+            }
+            
+            const enteredData = await enteredResponse.json();
+            console.log("Response from /entered:", enteredData);
+        
+            // Optionally, refresh the map markers
+            fetchEntriesAndAddMarkers();
         }
-        console.log("Data to be sent to server:", jsonData);
+    });
 
-        // Send a POST request to the '/entered' endpoint with the JSON data.
-        fetch('/entered', {
-            method: 'POST',
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: jsonData
-        })
-            //parse response as json
-            .then(res => {
-                return res.json();
-            })
-            //log response and catch any errors
-            .then(data => (console.log("Response from /entered:", data)))
-            .catch(error => console.error("Error in fetch /entered:", error));
-    })
     //function up click of get-read-out button - this is a place holder for map places
     document.getElementById('get-read-out').addEventListener('click', () => {
         fetchEntriesAndAddMarkers();
@@ -196,8 +339,10 @@ window.addEventListener('load', () => {
                 //if data is an array make a market for each entry
                 if (Array.isArray(data)) {
 
-
                     data.forEach(entry => {
+                        let imageTag = entry.multimedia && entry.multimedia !== 'null' && entry.multimedia !== '' 
+                        ? `<img src="/uploads/${entry.multimedia}" alt="Uploaded image" style="width: 100px;">` 
+                        : 'Come & Take Photos'; // Only include the image tg if the path is valid                        
                         if (typeof entry.lat === 'number' && typeof entry.lon === 'number') {
                             let categoryIcon;
                             // Determine the icon based on the category
@@ -217,10 +362,18 @@ window.addEventListener('load', () => {
                                 case 'living':
                                     categoryIcon = livingMarker;
                                     break;
+                                    console.error('Invalid category:', entry.category);
+                                    return; // Exit the function if the category is invalid
                             }
 
-                            L.marker([entry.lat, entry.lon],{icon: categoryIcon}).addTo(map)
-                                .bindPopup(`User: ${entry.user} <br>Location: ${entry.location} <br>Description: ${entry.description}<br>Category: ${entry.category}`);
+                            L.marker([entry.lat, entry.lon], { icon: categoryIcon }).addTo(map)
+                                .bindPopup(
+                                    `User: ${entry.user} <br>
+                                    Location: ${entry.location} <br>
+                                    Description: ${entry.description}<br>
+                                    Category: ${entry.category}<br>
+                                    ${imageTag}` 
+                                    );
                         } else {
                             console.error('Invalid entry:', entry);
                         }

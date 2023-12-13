@@ -65,9 +65,9 @@
 
 #entry-form-container {
     display: flex;
-    
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     justify-content: space-between;
-    color: whitesmoke; /* Change font color to white for visibility on black background */
+    color: white; /* Change font color to white for visibility on black background */
     padding: 20px;
 }
 .imgwrapper {
